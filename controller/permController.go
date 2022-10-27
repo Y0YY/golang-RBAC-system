@@ -21,9 +21,14 @@ func (pc *PermController) Create(ctx *gin.Context) {
 	data, _ := ctx.GetRawData()
 	var NewPerm Perm
 	_ = json.Unmarshal(data, &NewPerm)
-	if CreatPerm(NewPerm) == nil {
+	err := CreatPerm(NewPerm)
+	if err == nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"result": "success",
+		})
+	} else {
+		ctx.JSON(403, gin.H{
+			"error": err.Error(),
 		})
 	}
 }

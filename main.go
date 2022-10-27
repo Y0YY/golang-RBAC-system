@@ -39,7 +39,7 @@ func main() {
 	}
 	permGroup := ginSever.Group("/perm")
 	{
-		permGroup.GET("/getAllperms", permController.ShowAllPerms)
+		permGroup.GET("/getAllPerms", permController.ShowAllPerms)
 		permGroup.POST("/create", permController.Create)
 		permGroup.DELETE("/deleteById", permController.DeleteById)
 		permGroup.DELETE("/deleteByName", permController.DeleteByName)

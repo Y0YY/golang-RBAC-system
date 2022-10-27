@@ -50,14 +50,14 @@ func GetAllRoles() map[string]Role {
 		return m[r.RoleId], nil
 	}
 */
-func GetAllPermsOfRole(r Role) ([]byte, error) {
+func GetAllPermsOfRole(r Role) ([]Perm, error) {
 	data, err := ReadData("role_perm_data")
 	if err != nil {
 		return nil, err
 	}
 	var m map[string][]Perm
 	_ = json.Unmarshal(data, &m)
-	return data, nil
+	return m[r.RoleId], nil
 }
 
 // 通过角色名找角色
@@ -143,7 +143,7 @@ func DeletePermOfRole(r Role, p Perm) error {
 }
 
 func DeleteRoleById(id string) error {
-	//删除用户数据
+	//删除角色数据
 	data, err := ReadData("roles_data")
 	if err != nil {
 		return err
@@ -188,5 +188,5 @@ func DeleteRoleByName(roleName string) error {
 	if err != nil {
 		return err
 	}
-	return DeleteUserById(r.RoleId)
+	return DeleteRoleById(r.RoleId)
 }

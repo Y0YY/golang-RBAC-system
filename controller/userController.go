@@ -20,36 +20,43 @@ func (uc *UserController) GetAllUsers(ctx *gin.Context) {
 func (uc *UserController) GetAllRolesOfUser(ctx *gin.Context) {
 	userName := ctx.Param("userName")
 	u, err1 := FindUserByName(userName)
-	rs, err2 := GetAllRolesOfUser(*u)
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
-			"err": err1.Error(),
-		})
-	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
-			"err":      err2.Error(),
+		ctx.JSON(403, gin.H{
+			"err":      err1.Error(),
 			"userName": userName,
 		})
 	} else {
-		ctx.JSON(http.StatusOK, rs)
+		rs, err2 := GetAllRolesOfUser(*u)
+		if err2 != nil {
+			ctx.JSON(403, gin.H{
+				"err":      err2.Error(),
+				"userName": userName,
+			})
+		} else {
+			ctx.JSON(http.StatusOK, rs)
+		}
 	}
+
 }
 
 // 得到一个用户的所有权限
 func (uc *UserController) GetAllPermsOfUser(ctx *gin.Context) {
 	userName := ctx.Param("userName")
 	u, err1 := FindUserByName(userName)
-	rs, err2 := GetAllPermsOfUser(*u)
+
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"err": err1.Error(),
 		})
-	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
-			"err": err2.Error(),
-		})
 	} else {
-		ctx.JSON(http.StatusOK, rs)
+		rs, err2 := GetAllPermsOfUser(*u)
+		if err2 != nil {
+			ctx.JSON(403, gin.H{
+				"err": err2.Error(),
+			})
+		} else {
+			ctx.JSON(http.StatusOK, rs)
+		}
 	}
 }
 
@@ -60,11 +67,11 @@ func (uc *UserController) IsPrmitted(ctx *gin.Context) {
 	u, err1 := FindUserByName(userName)
 	p, err2 := FindPermByName(permName)
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"err": err1.Error(),
 		})
 	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"err": err2.Error(),
 		})
 	} else if IsPrmitted(*u, *p) {
@@ -83,9 +90,14 @@ func (uc *UserController) Create(ctx *gin.Context) {
 	data, _ := ctx.GetRawData()
 	var NewUser User
 	_ = json.Unmarshal(data, &NewUser)
-	if CreatUser(NewUser) == nil {
+	err := CreatUser(NewUser)
+	if err == nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"result": "success",
+		})
+	} else {
+		ctx.JSON(403, gin.H{
+			"error": err.Error(),
 		})
 	}
 }
@@ -100,19 +112,19 @@ func (uc *UserController) AddRole(ctx *gin.Context) {
 	u, err1 := FindUserByName(userName)
 	r, err2 := FindRoleByName(roleName)
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"userName": userName,
 			"err":      err1.Error(),
 		})
 	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"roleName": roleName,
 			"err":      err2.Error(),
 		})
 	} else {
 		err := AddRole(*u, *r)
 		if err != nil {
-			ctx.JSON(http.StatusOK, gin.H{
+			ctx.JSON(403, gin.H{
 				"err": err.Error(),
 			})
 		} else {
@@ -169,19 +181,19 @@ func (uc *UserController) DeleteRole(ctx *gin.Context) {
 	u, err1 := FindUserByName(userName)
 	r, err2 := FindRoleByName(roleName)
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"userName": userName,
 			"err":      err1.Error(),
 		})
 	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"roleName": roleName,
 			"err":      err2.Error(),
 		})
 	} else {
 		err := DeleteRoleOfUser(*u, *r)
 		if err != nil {
-			ctx.JSON(http.StatusOK, gin.H{
+			ctx.JSON(403, gin.H{
 				"err": err.Error(),
 			})
 		} else {

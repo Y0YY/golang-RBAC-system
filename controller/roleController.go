@@ -20,17 +20,19 @@ func (rc *RoleController) GetAllRoles(ctx *gin.Context) {
 func (rc *RoleController) GetAllPermsOfRole(ctx *gin.Context) {
 	roleName := ctx.Param("roleName")
 	r, err1 := FindRoleByName(roleName)
-	ps, err2 := GetAllPermsOfRole(*r)
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"err": err1.Error(),
 		})
-	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
-			"err": err2.Error(),
-		})
 	} else {
-		ctx.JSON(http.StatusOK, string(ps))
+		ps, err2 := GetAllPermsOfRole(*r)
+		if err2 != nil {
+			ctx.JSON(403, gin.H{
+				"err": err2.Error(),
+			})
+		} else {
+			ctx.JSON(http.StatusOK, ps)
+		}
 	}
 }
 
@@ -45,7 +47,7 @@ func (rc *RoleController) Create(ctx *gin.Context) {
 			"result": "success",
 		})
 	} else {
-		ctx.JSON(200, gin.H{
+		ctx.JSON(403, gin.H{
 			"error": err.Error(),
 		})
 	}
@@ -61,19 +63,19 @@ func (rc *RoleController) AddPerm(ctx *gin.Context) {
 	r, err1 := FindRoleByName(roleName)
 	p, err2 := FindPermByName(permName)
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"roleName": roleName,
 			"err":      err1.Error(),
 		})
 	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"permName": permName,
 			"err":      err2.Error(),
 		})
 	} else {
 		err := AddPerm(*r, *p)
 		if err != nil {
-			ctx.JSON(http.StatusOK, gin.H{
+			ctx.JSON(403, gin.H{
 				"err": err.Error(),
 			})
 		} else {
@@ -130,19 +132,19 @@ func (rc *RoleController) DeletePerm(ctx *gin.Context) {
 	r, err1 := FindRoleByName(roleName)
 	p, err2 := FindPermByName(permName)
 	if err1 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"userName": roleName,
 			"err":      err1.Error(),
 		})
 	} else if err2 != nil {
-		ctx.JSON(http.StatusOK, gin.H{
+		ctx.JSON(403, gin.H{
 			"roleName": permName,
 			"err":      err2.Error(),
 		})
 	} else {
 		err := DeletePermOfRole(*r, *p)
 		if err != nil {
-			ctx.JSON(http.StatusOK, gin.H{
+			ctx.JSON(403, gin.H{
 				"err": err.Error(),
 			})
 		} else {

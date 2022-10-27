@@ -62,10 +62,10 @@ func DeletePermById(id string) error {
 	}
 	var perms map[string]Perm
 	_ = json.Unmarshal(data, &perms)
-	//_, flag := perms[id]
-	//if !flag {
-	//	return errors.New("该权限(" + id + ")不存在")
-	//}
+	_, flag := perms[id]
+	if !flag {
+		return errors.New("该ID不存在")
+	}
 	delete(perms, id)
 	data, _ = json.Marshal(perms)
 	_ = os.WriteFile("./data/perms_data.txt", data, 0666)
@@ -94,10 +94,10 @@ func DeletePermById(id string) error {
 	return nil
 }
 
-func DeletePermByName(roleName string) error {
-	r, err := FindRoleByName(roleName)
+func DeletePermByName(permName string) error {
+	p, err := FindPermByName(permName)
 	if err != nil {
 		return err
 	}
-	return DeleteUserById(r.RoleId)
+	return DeletePermById(p.PermId)
 }

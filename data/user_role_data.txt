@@ -1,1 +1,1 @@
-{"0001":[{"roleId":"0001","roleName":"Account manager"}],"0002":[{"roleId":"0002","roleName":"Sales consultant"}],"0003":[{"roleId":"0003","roleName":"Senior IT systems admin"}],"0004":[{"roleId":"0005","roleName":"Software developer"}],"0005":[{"roleId":"0002","roleName":"Sales consultant"}],"0006":[{"roleId":"0004","roleName":"IT operations admin"}]}
+{"0003":[{"roleId":"0003","roleName":"Senior IT systems admin"}],"0004":[{"roleId":"0005","roleName":"Software developer"}]}
