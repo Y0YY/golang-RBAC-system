@@ -121,13 +121,19 @@ func DeletePermOfRole(r Role, p Perm) error {
 
 	ps, flag := m[r.RoleId]
 	if !flag {
-		return nil
+		return errors.New("改角色未被分配该权限")
 	} else {
 		nps := ps[:0]
+		flag = true
 		for _, perm := range ps {
 			if perm.PermId != p.PermId {
 				nps = append(nps, perm)
+			} else {
+				flag = false
 			}
+		}
+		if flag {
+			return errors.New("改角色未被分配该权限")
 		}
 		m[r.RoleId] = nps
 		data, _ = json.Marshal(m)

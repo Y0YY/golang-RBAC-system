@@ -11,12 +11,12 @@ import (
 type UserController struct {
 }
 
-// 显示所有用户
+// 得到所有用户
 func (uc *UserController) GetAllUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, GetAllUsers())
 }
 
-// 显示一个用户的所有角色
+// 得到一个用户的所有角色
 func (uc *UserController) GetAllRolesOfUser(ctx *gin.Context) {
 	userName := ctx.Param("userName")
 	u, err1 := FindUserByName(userName)
@@ -35,7 +35,7 @@ func (uc *UserController) GetAllRolesOfUser(ctx *gin.Context) {
 	}
 }
 
-// 显示一个用户的所有权限
+// 得到一个用户的所有权限
 func (uc *UserController) GetAllPermsOfUser(ctx *gin.Context) {
 	userName := ctx.Param("userName")
 	u, err1 := FindUserByName(userName)
@@ -161,8 +161,11 @@ func (uc *UserController) DeleteByName(ctx *gin.Context) {
 
 // 删除一个用户的指定角色
 func (uc *UserController) DeleteRole(ctx *gin.Context) {
-	userName := ctx.Param("userName")
-	roleName := ctx.Param("roleName")
+	data, _ := ctx.GetRawData()
+	var body map[string]string
+	_ = json.Unmarshal(data, &body)
+	userName := body["userName"]
+	roleName := body["roleName"]
 	u, err1 := FindUserByName(userName)
 	r, err2 := FindRoleByName(roleName)
 	if err1 != nil {

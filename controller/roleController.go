@@ -122,8 +122,11 @@ func (rc *RoleController) DeleteByName(ctx *gin.Context) {
 
 // 删除指定角色的权限
 func (rc *RoleController) DeletePerm(ctx *gin.Context) {
-	roleName := ctx.Param("roleName")
-	permName := ctx.Param("permName")
+	data, _ := ctx.GetRawData()
+	var body map[string]string
+	_ = json.Unmarshal(data, &body)
+	roleName := body["roleName"]
+	permName := body["permName"]
 	r, err1 := FindRoleByName(roleName)
 	p, err2 := FindPermByName(permName)
 	if err1 != nil {

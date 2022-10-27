@@ -109,13 +109,19 @@ func DeleteRoleOfUser(u User, r Role) error {
 
 	rs, flag := m[u.UserId]
 	if !flag {
-		return nil
+		return errors.New("该用户未被分配该角色")
 	} else {
 		nrs := rs[:0]
+		flag = true
 		for _, role := range rs {
 			if role.RoleId != r.RoleId {
 				nrs = append(nrs, role)
+			} else {
+				flag = false
 			}
+		}
+		if flag {
+			return errors.New("该用户未被分配该角色")
 		}
 		m[u.UserId] = nrs
 		data, _ = json.Marshal(m)

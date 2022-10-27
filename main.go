@@ -25,7 +25,7 @@ func main() {
 		userGroup.POST("/addRole", userController.AddRole)
 		userGroup.DELETE("/deleteById", userController.DeleteById)
 		userGroup.DELETE("/deleteByName", userController.DeleteByName)
-		userGroup.DELETE("/deleteRole/:userName/:roleName", userController.DeleteRole)
+		userGroup.DELETE("/deleteRole", userController.DeleteRole)
 	}
 	roleGroup := ginSever.Group("/role")
 	{
@@ -35,7 +35,7 @@ func main() {
 		roleGroup.POST("/addPerm", roleController.AddPerm)
 		roleGroup.DELETE("/deleteById", roleController.DeleteById)
 		roleGroup.DELETE("/deleteByName", roleController.DeleteByName)
-		roleGroup.DELETE("/deletePerm/:roleName/:permName", roleController.DeletePerm)
+		roleGroup.DELETE("/deletePerm", roleController.DeletePerm)
 	}
 	permGroup := ginSever.Group("/perm")
 	{
