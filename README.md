@@ -3,7 +3,7 @@
 ### /user
 方法名 | 入参 | 使用方法 |  介绍  | 请求方式
 :-:|:-:|:-:|:-:|:-:
-GetAllUsers | 无 | /getAllUsers | | 得到所有用户 | GET
+GetAllUsers | 无 | /getAllUsers | 得到所有用户 | GET
 GetAllRolesOfUser | userName | /getAllRolesOfUser/{userName} | 得到一个用户的所有角色 | GET
 GetAllPermsOfUser | userName | /getAllPermsOfUser/{userName} | 得到一个用户的所有权限 | GET
 IsPrmitted | userName,permName | /isPrmitted/{userName}/{permName} | 查询用户是否有指定权限 | GET
@@ -16,7 +16,7 @@ DeleteRole | userName,roleName(JSON) | /deleteRole | 删除一个用户的指定
 ### /role
 方法名 | 入参 | 使用方法 |  介绍  | 请求方式
 :-:|:-:|:-:|:-:|:-:
-GetAllRoles | 无 | /getAllRoles | | 得到所有角色 | GET
+GetAllRoles | 无 | /getAllRoles | 得到所有角色 | GET
 GetAllPermsOfRole | roleName | /getAllPermsOfRole/{roleName} | 得到一个角色的所有权限 | GET
 Create | roleId, roleName(JSON) | /create | 创建角色 | POST
 AddPerm | roleName, permName(JSON) | /addPerm | 为一个角色添加权限 | POST
